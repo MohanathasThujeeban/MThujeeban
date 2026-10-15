@@ -4,7 +4,7 @@ import { useRegisterSection, useSceneMetrics } from '../engine/hooks';
 
 export const JourneyBack: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentYear, setCurrentYear] = useState('2021');
+  const [currentYear, setCurrentYear] = useState('2017');
 
   useSceneMetrics('journey', (metrics) => {
     if (!containerRef.current) return;
@@ -12,8 +12,8 @@ export const JourneyBack: React.FC = () => {
     const opacity = Math.min(enter * 1.8, Math.max(0, 1 - exit * 2.4));
     containerRef.current.style.opacity = `${opacity}`;
 
-    // Colossal outlined year rolling from 2021 to 2026
-    const yr = Math.round(2021 + p * (2026 - 2021));
+    // Colossal outlined year rolling dynamically from 2017 to 2026
+    const yr = Math.round(2017 + p * (2026 - 2017));
     setCurrentYear(String(yr));
   });
 
@@ -44,23 +44,23 @@ export const JourneySection: React.FC = () => {
     // SVG path draws from bottom up using pathLength=1 and strokeDashoffset
     if (pathRef.current) {
       // 1 at bottom, 0 at top
-      const offset = Math.max(0, 1 - p * 1.1);
+      const offset = Math.max(0, 1 - p * 1.15);
       pathRef.current.style.strokeDashoffset = `${offset}`;
     }
 
-    // Active item index (newest at top, index 0 is 2026)
-    const activeIdx = p > 0.65 ? 0 : p > 0.35 ? 1 : 2;
+    // Active item index: bottom (2017) when entering, top (2026) when advancing
+    const total = journeyItems.length;
+    const activeIdx = Math.min(total - 1, Math.max(0, Math.floor((1 - Math.min(0.99, p)) * total)));
     setActiveItem(activeIdx);
 
-    // Items reveal from bottom with rotateY -55deg -> 0
+    // Items reveal from bottom with rotateY -30deg -> 0
     itemsRef.current.forEach((el, idx) => {
       if (!el) return;
-      // Invert indexing so bottom reveals first
       const orderFromBottom = journeyItems.length - 1 - idx;
-      const revealStart = orderFromBottom * 0.25;
-      const itemP = Math.min(1, Math.max(0, (p - revealStart) / 0.35));
+      const revealStart = (orderFromBottom / journeyItems.length) * 0.6;
+      const itemP = Math.min(1, Math.max(0, (p - revealStart) / 0.22));
 
-      const rotY = (1 - itemP) * -55;
+      const rotY = (1 - itemP) * -30;
       const itemOp = itemP;
       el.style.transform = `perspective(1000px) rotateY(${rotY}deg)`;
       el.style.opacity = `${itemOp}`;
@@ -74,7 +74,7 @@ export const JourneySection: React.FC = () => {
           <div className="journey-front-column">
             {/* Label and title */}
             <div className="section-label">
-              <span className="section-num">(03)</span> — TIMELINE
+              <span className="section-num">(03)</span> — TIMELINE & EXPERIENCE
             </div>
 
             <h2 className="journey-title">
@@ -86,16 +86,16 @@ export const JourneySection: React.FC = () => {
             <div className="journey-timeline">
               {/* SVG drawing track */}
               <div className="journey-track-svg-wrap">
-                <svg className="journey-svg" viewBox="0 0 4 360" preserveAspectRatio="none">
+                <svg className="journey-svg" viewBox="0 0 4 520" preserveAspectRatio="none">
                   {/* Background grey track */}
-                  <line x1="2" y1="0" x2="2" y2="360" stroke="rgba(13,13,13,0.12)" strokeWidth="2" />
+                  <line x1="2" y1="0" x2="2" y2="520" stroke="rgba(13,13,13,0.12)" strokeWidth="2" />
                   {/* Drawing red track from bottom up */}
                   <path
                     ref={pathRef}
-                    d="M 2,360 L 2,0"
+                    d="M 2,520 L 2,0"
                     fill="none"
                     stroke="#ff1f1f"
-                    strokeWidth="2"
+                    strokeWidth="2.5"
                     pathLength={1}
                     strokeDasharray={1}
                     strokeDashoffset={1}
@@ -117,9 +117,28 @@ export const JourneySection: React.FC = () => {
                     >
                       <div className="journey-node-dot" />
                       <div className="journey-item-content">
-                        <span className="journey-item-year">{item.year}</span>
-                        <h4 className="journey-item-title">{item.title}</h4>
-                        <div className="journey-item-org">{item.organization}</div>
+                        <div className="journey-item-header">
+                          <div className="journey-logo-box">
+                            <img
+                              src={item.logo}
+                              alt={item.organization}
+                              className="journey-logo-img"
+                              loading="lazy"
+                            />
+                          </div>
+                          <div className="journey-item-meta">
+                            <div className="journey-item-badges">
+                              <span className="journey-item-year">{item.year}</span>
+                              {item.type && (
+                                <span className={`journey-type-badge journey-type-${item.type.toLowerCase()}`}>
+                                  {item.type}
+                                </span>
+                              )}
+                            </div>
+                            <h4 className="journey-item-title">{item.title}</h4>
+                            <div className="journey-item-org">{item.organization}</div>
+                          </div>
+                        </div>
                         <p className="journey-item-desc">{item.description}</p>
                       </div>
                     </div>

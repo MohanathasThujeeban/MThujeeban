@@ -24,6 +24,8 @@ export interface JourneyItem {
   title: string;
   organization: string;
   description: string;
+  logo: string;
+  type?: 'EXPERIENCE' | 'EDUCATION';
 }
 
 export interface AwardStat {
@@ -112,22 +114,44 @@ export const PORTFOLIO_DATA = {
   ] as Project[],
   journey: [
     {
-      year: '2026',
-      title: 'B. OF INFORMATION TECHNOLOGY',
+      year: '2026 JUN — PRESENT',
+      title: 'BACKEND DEVELOPER TRAINEE',
+      organization: 'Epic Lanka (Pvt) Ltd',
+      description: 'Engineering mission-critical enterprise FinTech systems, secure electronic transaction automation, and scalable backend services.',
+      logo: './logos/epic.png',
+      type: 'EXPERIENCE',
+    },
+    {
+      year: '2026 — PRESENT',
+      title: 'BACHELOR OF INFORMATION TECHNOLOGY',
       organization: 'University of Moratuwa',
-      description: 'Deepening foundations in distributed systems, advanced algorithms, and cloud computing.',
+      description: 'Reading for B.IT (Honours) with deep specialization in distributed computing, cloud architectures, and advanced algorithmic engineering.',
+      logo: './logos/uom.png',
+      type: 'EDUCATION',
     },
     {
-      year: '2024',
+      year: '2025 OCT — 2026 MAY',
       title: 'SOFTWARE ENGINEER INTERN',
-      organization: 'Neirah Tech Solutions',
-      description: 'Building production enterprise features with React, Spring Boot, CI/CD, and MongoDB Atlas.',
+      organization: 'Neirah Tech Solutions (Pvt) Ltd',
+      description: 'Developed scalable enterprise web applications, RESTful microservices, and interactive UI systems using React, Spring Boot, and MongoDB Atlas.',
+      logo: './logos/neirah_tech_solution_logo.jpg',
+      type: 'EXPERIENCE',
     },
     {
-      year: '2024',
+      year: '2024 — PRESENT',
       title: 'NDT IN INFORMATION TECHNOLOGY',
       organization: 'Institute of Technology, University of Moratuwa',
-      description: 'Rigorous engineering curriculum covering full-stack SDLC, network security, and database design.',
+      description: 'Comprehensive engineering curriculum covering full-stack SDLC, network protocols, system security, and database architectures.',
+      logo: './logos/itum.png',
+      type: 'EDUCATION',
+    },
+    {
+      year: '2017 & 2020',
+      title: 'G.C.E. A/L & O/L (PHYSICAL SCIENCE)',
+      organization: 'Vavuniya Tamil Madhya Maha Vidyalayam',
+      description: 'Excelled in Physical Science (Combined Maths, Physics, Chemistry) for G.C.E. A/L (2020), following distinction results in G.C.E. O/L (2017).',
+      logo: './logos/school.jpg',
+      type: 'EDUCATION',
     },
   ] as JourneyItem[],
   skills: [
